@@ -1,0 +1,18 @@
+- name: Add a new user
+  ansible.builtin.user:
+    name: "{{ username }}"
+    shell: /bin/bash
+    group: sudo
+    generate_ssh_key: yes
+    force: yes
+    state: present
+  
+- name: Add a user to the sudoers
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ username }}"
+    content: "{{ username }}  ALL=(ALL)  NOPASSWD: ALL"
+
+- name: restart ssh
+  service:
+    name: sshd
+    state: restarted

@@ -1,0 +1,8 @@
+[all]
+vm ansible_host=178.154.203.246
+
+[all:vars]
+username=user1
+nginx_static_files_location=/opt/nginx/ansible
+php_server_internal_ip=192.168.10.9
+php_server_internal_port=9000

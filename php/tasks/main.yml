@@ -1,0 +1,18 @@
+---
+- name: Install php8.1-fpm
+  ansible.builtin.apt:
+    name: php8.1-fpm
+    state: present
+    update_cache: true
+
+- name: Configure php8.1-fpm to listen to 9000 port
+  ansible.builtin.lineinfile:
+    dest: /etc/php/8.1/fpm/pool.d/www.conf
+    backup: yes
+    backrefs: yes
+    state: present
+    regexp: "^listen = "
+    line: "listen = 9000"
+
+  notify:
+    - restart-php

@@ -1,0 +1,21 @@
+---
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+  tags: install nginx
+
+- name: Add PHP support to Nginx
+  ansible.builtin.template:
+    src: ./templates/nginx-default.j2
+    dest: /etc/nginx/sites-available/default
+
+- name: Change nginx root and create a PHP info file
+  shell: |
+    mkdir -p {{ nginx_static_files_location }}
+    chmod -R 777 {{ nginx_static_files_location }}
+    echo "<?php phpinfo(); ?>" >> {{ nginx_static_files_location }}/info.php
+
+  notify:
+    - restart-nginx
